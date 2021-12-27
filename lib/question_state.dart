@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_practice_3/answered_question.dart';
 import 'package:flutter_practice_3/question.dart';
 import 'package:flutter_practice_3/questions_service.dart';
@@ -69,6 +68,7 @@ class QuestionState with ChangeNotifier {
   /// Starts a new question session by fetching new questions
   void restartQuestionaire() {
     _getQuestions();
+    notifyListeners();
   }
 
   /// Returns true if the user answered all the questions
@@ -80,6 +80,10 @@ class QuestionState with ChangeNotifier {
   /// by the user for each question
   List<AnsweredQuestion> get answers {
     return _answered;
+  }
+
+  int get answersNum {
+    return _answered.length;
   }
 
   bool get isLoading => _isLoading;

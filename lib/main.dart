@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_practice_3/little_icons.dart';
 import 'package:flutter_practice_3/question_state.dart';
 import 'package:provider/provider.dart';
 
@@ -31,9 +32,25 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  List<LittleIcons> list = [];
+
   void _checkAnswer(bool answer) {
     var state = QuestionState.of(context, listen: false);
     state.userAnswered(answer);
+    updateList();
+  }
+
+  List<LittleIcons> updateList() {
+    var state = QuestionState.of(context, listen: false);
+    list.clear();
+    if (state.answersNum > 0) {
+      for (var item in state.answers) {
+        list.add(LittleIcons(isCorrect: item.userAnswered));
+      }
+      return list;
+    }
+
+    return list;
   }
 
   @override
@@ -98,7 +115,17 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ),
-              Row(),
+              Container(
+                height: 15,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemCount: list.length,
+                  itemBuilder: (context, index) {
+                    return list[index];
+                  },
+                ),
+              ),
             ],
           );
         },
